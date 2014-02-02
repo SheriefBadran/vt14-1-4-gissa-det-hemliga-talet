@@ -7,5 +7,6 @@ namespace GuessSecretNumber.Model
 {
     public class SecretNumber
     {
+
     }
 }
