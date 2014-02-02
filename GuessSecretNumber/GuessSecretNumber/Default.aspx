@@ -8,10 +8,28 @@
     <link href="~/Content/style.css" rel="stylesheet" />
 </head>
 <body>
-    <form id="form1" runat="server">
-    <div>
-    
+    <div id="container">
+        <header><h1>Gissa det hemliga talet</h1></header>
+        <hr />
+        <form id="form1" runat="server">
+            <%-- VALIDATION SUMMARY --%>
+            <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Fel inträffade! Åtgärda felen och försök igen." DisplayMode="BulletList" />
+
+            <%-- CONTROL FOR GUESS INPUT --%>
+            <div>
+                <p>Ange ett tal mellan 1 och 100:</p>
+                <asp:TextBox ID="SecretNumberGuess" runat="server"></asp:TextBox>
+
+                <%-- Validation --%>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidatorGuess" runat="server" ErrorMessage="Ett tal måste anges" Text="*" Display="Dynamic" ControlToValidate="SecretNumberGuess"></asp:RequiredFieldValidator>
+                <asp:CompareValidator ID="CompareValidatorGuess" runat="server" ErrorMessage="Fyll i ett heltal" Text="*" ControlToValidate="SecretNumberGuess" Display="Dynamic" Type="Integer" Operator="DataTypeCheck"></asp:CompareValidator>
+                <asp:RangeValidator ID="RangeValidatorGuess" runat="server" ErrorMessage="Din gissning måste ligga mellan 1 och 100." Text="*" Display="None" MinimumValue="1" MaximumValue="100" Type="Integer" ControlToValidate="SecretNumberGuess"></asp:RangeValidator>
+
+                <%-- POST BUTTON --%>
+                <asp:Button ID="GuessButton" runat="server" Text="Skicka gissning" OnClick="GuessButton_Click" />
+            </div>
+        </form>
+        <div class="clear"></div>
     </div>
-    </form>
 </body>
 </html>

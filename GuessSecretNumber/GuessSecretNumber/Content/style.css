@@ -1,2 +1,53 @@
-﻿body {
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2.0em;
+}
+
+p {
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+hr {
+    padding: 20px;
+    background-color: #F78D3F;
+    margin-bottom: 5%;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+}
+
+#container {
+    position: relative;
+    border: 2px solid #000;
+    width: 50%;
+    min-width: 300px;
+    margin: 5% auto;
+}
+
+#ValidationSummary {
+    border: 2px solid #f00;
+    width: 50%;
+    margin-left: 15px;
+    padding: 20px;
+    font-weight: bold;
+}
+
+#ValidationSummary ul li {
+    margin-left: 20px;
+    font-weight: 100;
 }

@@ -18,7 +18,7 @@ namespace GuessSecretNumber
                 Path = "~/Scripts/jquery-2.0.3.min.js",
                 DebugPath = "~/Scripts/jquery-2.0.3.js",
                 CdnPath = "http://ajax.microsoft.com/ajax/jQuery/jquery-2.0.3.min.js",
-                CdnDebugPath = "http://ajax.microsoft.com/ajax/jQuery/jquery-2.0.3.js",
+                CdnDebugPath = "http://ajax.microsoft.com/ajax/jQuery/jquery-2.0.3.js"
             };
 
             ScriptManager.ScriptResourceMapping.AddDefinition("jquery", jQuery);
