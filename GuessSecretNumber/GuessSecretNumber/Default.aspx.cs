@@ -13,6 +13,7 @@ namespace GuessSecretNumber
         // Protected property
         protected SecretNumber SecretNumber
         {
+            // Lazy initialization. If the left hand of "??" is null -> Initialize Session variable with a new SecretNumber.
             get
             {
                 return Session["SecretNumber"] as SecretNumber ?? (SecretNumber)(Session["SecretNumber"] = new SecretNumber());
