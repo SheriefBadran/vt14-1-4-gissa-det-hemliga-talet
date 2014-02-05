@@ -26,7 +26,12 @@
                 <asp:RangeValidator ID="RangeValidatorGuess" runat="server" ErrorMessage="Din gissning måste ligga mellan 1 och 100." Text="*" Display="None" MinimumValue="1" MaximumValue="100" Type="Integer" ControlToValidate="SecretNumberGuess"></asp:RangeValidator>
 
                 <%-- POST BUTTON --%>
-                <asp:Button ID="GuessButton" runat="server" Text="Skicka gissning" OnClick="GuessButton_Click" />
+                <asp:Button ID="GuessButton" runat="server" Text="Skicka gissning" OnClick="GuessButton_Click" Visible="true" />
+                <asp:Button ID="NewGameButton" runat="server" Text="Starta nytt spel" CausesValidation="false" Visible="false" />
+            </div>
+            <div>
+                <p><asp:Literal ID="Guesses" runat="server"></asp:Literal></p>
+                <p><asp:Literal ID="GuessResponse" runat="server"></asp:Literal></p>
             </div>
         </form>
         <div class="clear"></div>

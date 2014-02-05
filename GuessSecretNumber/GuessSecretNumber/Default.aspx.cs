@@ -15,36 +15,85 @@ namespace GuessSecretNumber
         {
             get
             {
-                return (SecretNumber)Session["secretNumber"];
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ApplicationException("Ett fel har inträffat!");
-                }
-
-                Session["secretNumber"] = value;
+                return Session["SecretNumber"] as SecretNumber ?? (SecretNumber)(Session["SecretNumber"] = new SecretNumber());
             }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            // Empty
         }
 
         protected void GuessButton_Click(object sender, EventArgs e)
         {
+            if (Session.IsNewSession)
+            {
+                ModelState.AddModelError(String.Empty, "Session har gått ut!");
+                GuessButton.Visible = false;
+                NewGameButton.Visible = true;
+                SecretNumberGuess.Text = String.Empty;
+                SecretNumberGuess.Enabled = false;
+                SecretNumber.Initialize();
+                return;
+            }
+
             if (IsValid)
 	        {
-		         var number = int.Parse(SecretNumberGuess.Text);
-                if (SecretNumber == null)
+
+                try
                 {
-                    SecretNumber = new SecretNumber();
+                    Outcome outcome = SecretNumber.MakeGuess(int.Parse(SecretNumberGuess.Text));
+                }
+                catch (Exception ex)
+                {
+
+                    ModelState.AddModelError(String.Empty, ex.Message);
                 }
 
-                Outcome outcome = SecretNumber.MakeGuess(number);
+                var gameEnd = RenderGuessOutcome(SecretNumber);
+                
+
+                if (gameEnd)
+                {
+                    GuessButton.Visible = false;
+                    NewGameButton.Visible = true;
+                    SecretNumberGuess.Text = String.Empty;
+                    SecretNumberGuess.Enabled = false;
+                    SecretNumber.Initialize();
+                }
 	        }
+        }
+
+        protected bool RenderGuessOutcome(SecretNumber SecretNumber)
+        {
+            var response = String.Empty;
+            switch (SecretNumber.Outcome)
+            {
+                case Outcome.High:
+                    response = "För högt!";
+                    break;
+                case Outcome.Low:
+                    response = "För lågt!";
+                    break;
+                case Outcome.Right:
+                    response = "Grattis! Du gissade rätt tal!";
+                    break;
+                case Outcome.OldGuess:
+                    response = "Du har redan gissat på det talet.";
+                    break;
+                case Outcome.NoMoreGuesses:
+                    response = "Tyvärr! Du har slut på gissningar, bättre lycka nästa gång.";
+                    break;
+            }
+
+            Guesses.Text = SecretNumber.Guess.ToString();
+            Guesses.Text = String.Join(" ", SecretNumber.GuessedNumbers.Select(sn => sn.Number));
+            GuessResponse.Text = response;
+            Guesses.Visible = true;
+            GuessResponse.Visible = true;
+
+            return SecretNumber.Outcome == Outcome.NoMoreGuesses || SecretNumber.Outcome == Outcome.Right;
+
         }
     }
 }

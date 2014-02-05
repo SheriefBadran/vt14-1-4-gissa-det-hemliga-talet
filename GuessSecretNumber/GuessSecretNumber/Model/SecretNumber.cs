@@ -10,7 +10,7 @@ namespace GuessSecretNumber.Model
         // Fields
         public const int MaxNumberOfGuesses = 7;
 
-        private GuessedNumber[] _guessedNumbers;
+        private List<GuessedNumber> _guessedNumbers;
         private int? _number = null;
 
         // Fields declared by me
@@ -23,7 +23,7 @@ namespace GuessSecretNumber.Model
         // Constructor
         public SecretNumber()
         {
-            _guessedNumbers = new GuessedNumber[MaxNumberOfGuesses];
+            _guessedNumbers = new List<GuessedNumber>(MaxNumberOfGuesses);
 
             _outCome = new Outcome();
             _random = new Random();
@@ -49,11 +49,7 @@ namespace GuessSecretNumber.Model
         {
             get
             {
-                return _count;
-            }
-            private set
-            {
-                _count = value;
+                return _guessedNumbers.Count();
             }
         }
 
@@ -74,9 +70,9 @@ namespace GuessSecretNumber.Model
         }
 
         // returns a reference to a copy of the privte field _guessedNumbers
-        public GuessedNumber[] GuessedNumbers
+        public IEnumerable<GuessedNumber> GuessedNumbers
         {
-            get { return (GuessedNumber[])_guessedNumbers.Clone(); }
+            get { return _guessedNumbers.AsReadOnly(); }
         }
 
         // Related to propery CanMakeGuess
@@ -112,17 +108,16 @@ namespace GuessSecretNumber.Model
             // Recycle the array that _guessedNumbers refers to. Clear all guesses and initialize the elements with default values for the type GuessedNumber
             //_guessedNumbers.Initialize();
 
-            for (int i = 0; i < _guessedNumbers.Length; i++)
-            {
-                _guessedNumbers[i].Number = null;
-                _guessedNumbers[i].Outcome = Outcome.Indefinite;
-            }
+            //for (int i = 0; i < _guessedNumbers.Length; i++)
+            //{
+            //    _guessedNumbers[i].Number = null;
+            //    _guessedNumbers[i].Outcome = Outcome.Indefinite;
+            //}
+
+            _guessedNumbers.Clear();
 
             // Generate secret number
             _number = _random.Next(1, 101);
-
-            // Property that holds amount of guesses
-            Count = 0;
 
             // Set _latestGuess to null
             Guess = null;
@@ -138,7 +133,7 @@ namespace GuessSecretNumber.Model
             // Check if the guessed number is to high, low or if it equals the secret number
             if (guess < 1 || guess > 100)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("Fel! Din gissning måste ligga mellan 1 och 100.");
             }
 
             if (CanMakeGuess)
@@ -167,10 +162,12 @@ namespace GuessSecretNumber.Model
                         Guess = guess;
                     }
 
-                    _guessedNumbers[Count].Number = guess;
-                    _guessedNumbers[Count].Outcome = Outcome;
+                    GuessedNumber gn = new GuessedNumber();
+                    gn.Number = guess;
+                    gn.Outcome = Outcome;
+                    _guessedNumbers.Add(gn);
 
-                    Count++;
+                    //Count++;
                 }
             }
             else
